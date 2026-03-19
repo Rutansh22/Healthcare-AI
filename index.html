@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EMBEINGS AI — Intelligent healthcare operations, patient management automation, and clinical workflow systems for hospitals and clinics.">
+  <meta property="og:title" content="EMBEINGS AI — Rebuild How Healthcare Operates">
+  <meta property="og:description" content="AI-powered clinical workflows, patient automation, and operational intelligence for modern healthcare practices.">
+  <meta property="og:image" content="/og-image.png">
+  <title>Embeings AI — We Rebuild How Healthcare Operates</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────── */
+    :root {
+      --bg-primary: #0A0A0A;
+      --bg-card: #111111;
+      --bg-card-hover: #161616;
+      --border: #222222;
+      --border-hover: #333333;
+      --text-primary: #F5F5F0;
+      --text-muted: #888888;
+      --text-dim: #555555;
+      --accent: #A8FF3E;
+      --accent-dark: #7ACC1A;
+      --accent-glow: rgba(168, 255, 62, 0.15);
+      --accent-glow-strong: rgba(168, 255, 62, 0.25);
+      --text-hero: clamp(44px, 6vw, 78px);
+      --text-h2: clamp(30px, 4vw, 52px);
+      --text-h3: clamp(18px, 2vw, 22px);
+      --text-body: 16px;
+      --text-small: 14px;
+      --section-padding-y: 120px;
+      --card-padding: 32px;
+      --radius-card: 16px;
+      --radius-pill: 100px;
+      --max-width: 1200px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { border: none; background: none; font-family: inherit; }
+
+    /* ─── Container ─────────────────────────────────────────── */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── Badge ──────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border: 1px solid rgba(168, 255, 62, 0.25);
+      background: rgba(168, 255, 62, 0.06);
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+    .badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      box-shadow: 0 0 6px var(--accent);
+    }
+
+    /* ─── Scroll Animation ───────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up[data-delay="1"] { transition-delay: 0.1s; }
+    .fade-up[data-delay="2"] { transition-delay: 0.2s; }
+    .fade-up[data-delay="3"] { transition-delay: 0.3s; }
+    .fade-up[data-delay="4"] { transition-delay: 0.4s; }
+    .fade-up[data-delay="5"] { transition-delay: 0.5s; }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 24px;
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(10, 10, 10, 0.85);
+      border-color: var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-logo span {
+      color: var(--accent);
+      font-size: 22px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-link-diagnosis {
+      color: var(--accent) !important;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-link-diagnosis:hover { opacity: 0.8; }
+    .nav-diag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+      box-shadow: 0 0 6px var(--accent);
+      animation: navDotPulse 2s ease-in-out infinite;
+    }
+    @keyframes navDotPulse {
+      0%, 100% { box-shadow: 0 0 4px var(--accent); }
+      50% { box-shadow: 0 0 10px var(--accent), 0 0 18px rgba(168,255,62,0.4); }
+    }
+    .nav-cta {
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #000;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 600;
+      transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+    .nav-cta:hover {
+      background: #bfff5e;
+      box-shadow: 0 0 20px var(--accent-glow-strong);
+      transform: translateY(-1px);
+    }
+    .nav-mobile-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+    }
+    .nav-mobile-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(168, 255, 62, 0.07) 0%, rgba(168, 255, 62, 0.02) 45%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-glow-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(168, 255, 62, 0.3), transparent);
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+    .hero-badge {
+      margin-bottom: 32px;
+    }
+    h1.hero-heading {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: var(--text-hero);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 28px;
+      color: var(--text-primary);
+    }
+    h1.hero-heading .accent { color: var(--accent); }
+    h1.hero-heading .hero-line-single {
+      display: inline-block;
+      white-space: nowrap;
+      font-size: clamp(28px, 4.2vw, 64px);
+    }
+    h1.hero-heading .star {
+      color: var(--accent);
+      display: inline-block;
+      animation: spin-slow 8s linear infinite;
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 680px;
+      margin: 0 auto 40px;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 80px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 32px;
+      background: var(--accent);
+      color: #000;
+      border-radius: var(--radius-pill);
+      font-size: 15px;
+      font-weight: 600;
+      transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: 0 0 0 0 var(--accent-glow-strong);
+      animation: glow-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes glow-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(168, 255, 62, 0); }
+      50% { box-shadow: 0 0 24px 8px rgba(168, 255, 62, 0.2); }
+    }
+    .btn-primary:hover {
+      background: #bfff5e;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(168, 255, 62, 0.3);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 32px;
+      border: 1px solid rgba(245, 245, 240, 0.2);
+      color: var(--text-primary);
+      border-radius: var(--radius-pill);
+      font-size: 15px;
+      font-weight: 500;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+    .btn-secondary:hover {
+      border-color: rgba(245, 245, 240, 0.5);
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-2px);
+    }
+
+    /* ─── Marquee ────────────────────────────────────────────── */
+    .marquee-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      overflow: hidden;
+    }
+    .marquee-label {
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 12px;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .marquee-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+      background: var(--bg-card);
+    }
+    .marquee-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      flex-shrink: 0;
+    }
+    .marquee-fade-left,
+    .marquee-fade-right {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 120px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .marquee-fade-left {
+      left: 0;
+      background: linear-gradient(90deg, var(--bg-primary), transparent);
+    }
+    .marquee-fade-right {
+      right: 0;
+      background: linear-gradient(-90deg, var(--bg-primary), transparent);
+    }
+
+    /* ─── Section Shared ─────────────────────────────────────── */
+    section {
+      padding: var(--section-padding-y) 0;
+    }
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 64px;
+    }
+    .section-header.left {
+      text-align: left;
+      margin: 0 0 64px;
+    }
+    h2 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: var(--text-h2);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+    h3 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: var(--text-h3);
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      font-size: 17px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ─── WHY US ─────────────────────────────────────────────── */
+    #why-us { background: var(--bg-primary); }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .why-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: var(--card-padding);
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    .why-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(168, 255, 62, 0.3);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(168, 255, 62, 0.08);
+      background: var(--bg-card-hover);
+    }
+    .why-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(168, 255, 62, 0.08);
+      border: 1px solid rgba(168, 255, 62, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .why-card p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 500;
+      transition: gap var(--transition), opacity var(--transition);
+    }
+    .text-link:hover { gap: 10px; opacity: 0.8; }
+    .why-footer { text-align: center; margin-top: 48px; }
+
+    /* ─── MISSION ────────────────────────────────────────────── */
+    #mission {
+      background: linear-gradient(180deg, var(--bg-primary) 0%, #0d0d0d 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #mission::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(168, 255, 62, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mission-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .mission-left h2 {
+      font-size: clamp(28px, 3.5vw, 46px);
+      margin-bottom: 28px;
+    }
+    .mission-left h2 .accent { color: var(--accent); }
+    .mission-left p {
+      color: var(--text-muted);
+      font-size: 17px;
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+    .mission-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .stat-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      transition: border-color var(--transition);
+    }
+    .stat-block:hover { border-color: rgba(168, 255, 62, 0.2); }
+    .stat-number {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ─── HOW IT WORKS ───────────────────────────────────────── */
+    #how-it-works { background: var(--bg-primary); }
+    .how-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .step-item {
+      display: flex;
+      gap: 24px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .step-item:first-child { padding-top: 0; }
+    .step-item:last-child { border-bottom: none; }
+    .step-num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 48px;
+      letter-spacing: -0.05em;
+      transition: color var(--transition);
+    }
+    .step-item:hover .step-num { color: var(--accent); }
+    .step-content h3 { margin-bottom: 10px; font-size: 19px; }
+    .step-content p { color: var(--text-muted); font-size: 15px; line-height: 1.7; }
+    .metrics-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 40px;
+    }
+    .metric-badge {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg-card);
+    }
+    /* Dashboard Mockup */
+    .dashboard-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      position: sticky;
+      top: 100px;
+    }
+    .dashboard-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dash-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .dash-dot.red { background: #FF5F57; }
+    .dash-dot.yellow { background: #FEBC2E; }
+    .dash-dot.green { background: #28C840; }
+    .dashboard-title {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+    .dashboard-body { padding: 20px; }
+    .dash-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .dash-kpi {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .dash-kpi-label { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+    .dash-kpi-value {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .dash-kpi-value.green { color: var(--accent); }
+    .dash-chart {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .dash-chart-label { font-size: 11px; color: var(--text-dim); margin-bottom: 12px; }
+
+    /* ─── SERVICES ───────────────────────────────────────────── */
+    #services { background: #0d0d0d; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: var(--card-padding);
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      overflow: hidden;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(168, 255, 62, 0.25);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+    }
+    .service-visual {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      min-height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .service-card h3 { font-size: 18px; margin-bottom: 10px; }
+    .service-card p { color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+
+    /* Flowchart visual */
+    .flow-chart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+    }
+    .flow-node {
+      padding: 7px 16px;
+      border: 1px solid rgba(168, 255, 62, 0.3);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      background: rgba(168, 255, 62, 0.06);
+      white-space: nowrap;
+    }
+    .flow-arrow {
+      width: 1px;
+      height: 18px;
+      background: rgba(168, 255, 62, 0.2);
+      position: relative;
+    }
+    .flow-arrow::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid rgba(168, 255, 62, 0.4);
+    }
+
+    /* Code block visual */
+    .code-block {
+      background: #080808;
+      border: 1px solid #1a1a1a;
+      border-radius: 10px;
+      padding: 16px;
+      width: 100%;
+      font-family: 'Courier New', monospace;
+      font-size: 11.5px;
+      line-height: 1.8;
+    }
+    .code-line { display: flex; gap: 12px; }
+    .code-num { color: #333; user-select: none; min-width: 16px; }
+    .code-kw { color: #C792EA; }
+    .code-fn { color: #82AAFF; }
+    .code-str { color: #C3E88D; }
+    .code-cm { color: #546E7A; font-style: italic; }
+    .code-var { color: #F78C6C; }
+
+    /* Workflow nodes */
+    .workflow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .wf-node {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: #0d0d0d;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .wf-node.highlight {
+      border-color: rgba(168, 255, 62, 0.4);
+      color: var(--accent);
+      background: rgba(168, 255, 62, 0.06);
+    }
+    .wf-arrow {
+      width: 20px;
+      height: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+      position: relative;
+    }
+    .wf-arrow::after {
+      content: '';
+      position: absolute;
+      right: -3px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 5px solid var(--border);
+    }
+
+    /* Tags row */
+    .tags-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+    }
+    .tags-row::-webkit-scrollbar { display: none; }
+    .tag-pill {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+      background: var(--bg-card);
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .tag-pill:hover {
+      border-color: rgba(168, 255, 62, 0.3);
+      color: var(--text-primary);
+    }
+
+    /* ─── FAQ ────────────────────────────────────────────────── */
+    #diagnosis { padding: var(--section-padding); background: var(--bg-primary); }
+    #diagnosis .section-sub { font-size: 17px; color: var(--text-muted); max-width: 600px; margin: 16px auto 56px; text-align: center; line-height: 1.7; }
+    #faq { background: var(--bg-primary); }
+    .faq-list {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: color var(--transition);
+    }
+    .faq-question:hover { color: var(--accent); }
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--text-muted);
+      transition: transform var(--transition), border-color var(--transition), color var(--transition);
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      border-color: rgba(168, 255, 62, 0.4);
+      color: var(--accent);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer-inner {
+      padding: 0 0 24px;
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.75;
+      max-width: 640px;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 72px 24px 40px;
+    }
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 64px;
+      align-items: start;
+    }
+    .footer-visit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      padding: 12px 22px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--border-radius-pill);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      position: relative;
+      cursor: pointer;
+    }
+    .footer-visit-btn svg { transition: transform 0.25s ease; }
+    .footer-visit-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 20px rgba(168,255,62,0.15);
+    }
+    .footer-visit-btn:hover svg { transform: translateX(3px); }
+    .footer-visit-btn .btn-tooltip {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: #1a1a1a;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 400;
+      padding: 6px 12px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .footer-visit-btn .btn-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--border);
+    }
+    .footer-visit-btn:hover .btn-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .footer-cols-right {
+      display: contents;
+    }
+    .footer-brand p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.7;
+      margin-top: 16px;
+      max-width: 260px;
+    }
+    .footer-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-logo:hover { color: var(--accent); }
+    .footer-logo span { color: var(--accent); }
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col a {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+    .footer-col a:hover { color: var(--text-primary); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .footer-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: var(--accent);
+      color: #000;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 600;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .footer-cta:hover {
+      background: #bfff5e;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(168, 255, 62, 0.25);
+    }
+
+    /* ─── SVG Charts ─────────────────────────────────────────── */
+    .chart-svg { display: block; }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .mission-inner { grid-template-columns: 1fr; gap: 48px; }
+      .how-layout { grid-template-columns: 1fr; }
+      .dashboard-card { position: static; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (max-width: 768px) {
+      :root { --section-padding-y: 80px; }
+      .why-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: flex; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 10, 0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 24px;
+        gap: 20px;
+      }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      :root { --section-padding-y: 64px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .dash-kpi-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+    }
+
+    /* ─── IMAGE 1: Hero Showcase ──────────────────────────────── */
+    .hero-image-showcase {
+      width: 100%;
+      max-width: 1000px;
+      margin: 56px auto 0;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-img-inner {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(168,255,62,0.06);
+    }
+    .hero-img-inner img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+      filter: grayscale(15%) brightness(0.55);
+      transition: filter 0.6s ease, transform 0.6s ease;
+    }
+    .hero-img-inner:hover img {
+      filter: grayscale(5%) brightness(0.65);
+      transform: scale(1.015);
+    }
+    .hero-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(10,10,10,0.55) 0%,
+        rgba(168,255,62,0.04) 60%,
+        rgba(10,10,10,0.75) 100%
+      );
+      pointer-events: none;
+    }
+    .hero-img-bottom-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 20px 24px;
+      background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .hero-img-live {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(10,10,10,0.75);
+      border: 1px solid rgba(168,255,62,0.25);
+      border-radius: 100px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      backdrop-filter: blur(12px);
+    }
+    .live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    .hero-img-stats {
+      display: flex;
+      gap: 24px;
+    }
+    .hero-img-stat {
+      text-align: right;
+    }
+    .hero-img-stat-num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .hero-img-stat-label {
+      font-size: 11px;
+      color: rgba(245,245,240,0.5);
+      margin-top: 2px;
+    }
+    @media (max-width: 768px) {
+      .hero-img-inner img { height: 260px; }
+      .hero-img-stats { display: none; }
+    }
+
+    /* ─── IMAGE 2: Mission Strip ──────────────────────────────── */
+    .mission-image-strip {
+      position: relative;
+      margin-top: 64px;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+    .mission-image-strip img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      object-position: center 35%;
+      display: block;
+      filter: grayscale(10%) brightness(0.45);
+      transition: filter 0.6s ease, transform 0.6s ease;
+    }
+    .mission-image-strip:hover img {
+      filter: grayscale(0%) brightness(0.55);
+      transform: scale(1.01);
+    }
+    .mission-strip-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(10,10,10,0.0) 40%,
+        rgba(10,10,10,0.85) 100%
+      );
+      pointer-events: none;
+    }
+    .mission-strip-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 40px 48px;
+      text-align: right;
+    }
+    .mission-strip-pills {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .mission-strip-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(10,10,10,0.75);
+      border: 1px solid rgba(168,255,62,0.3);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      backdrop-filter: blur(10px);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .mission-strip-quote {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(16px, 2vw, 22px);
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      max-width: 440px;
+      font-style: italic;
+    }
+    @media (max-width: 768px) {
+      .mission-image-strip img { height: 260px; }
+      .mission-strip-content {
+        align-items: flex-start;
+        text-align: left;
+        padding: 24px 20px;
+        background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%);
+        justify-content: flex-end;
+      }
+      .mission-strip-pills { justify-content: flex-start; }
+      .mission-strip-overlay { background: rgba(10,10,10,0.4); }
+    }
+
+    /* ─── IMAGE 3: Services Banner ────────────────────────────── */
+    .services-image-banner {
+      margin: 0 0 40px 0;
+      position: relative;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 56px rgba(0,0,0,0.5);
+    }
+    .svc-banner-img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+      filter: grayscale(20%) brightness(0.45);
+      transition: filter 0.6s ease, transform 0.6s ease;
+    }
+    .services-image-banner:hover .svc-banner-img {
+      filter: grayscale(5%) brightness(0.55);
+      transform: scale(1.01);
+    }
+    .svc-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(10,10,10,0.85) 0%,
+        rgba(10,10,10,0.2) 50%,
+        rgba(10,10,10,0.6) 100%
+      );
+      pointer-events: none;
+    }
+    .svc-banner-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 48px;
+      max-width: 560px;
+    }
+    .svc-banner-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .svc-banner-heading {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+    .svc-banner-sub {
+      font-size: 15px;
+      color: rgba(245,245,240,0.65);
+      line-height: 1.65;
+    }
+    @media (max-width: 768px) {
+      .svc-banner-img { height: 240px; }
+      .svc-banner-content { padding: 28px 24px; }
+      .svc-banner-heading { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+
+<!-- ─── NAV ──────────────────────────────────────────────────── -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="https://embeings.io" target="_blank" rel="noopener noreferrer" class="nav-logo">
+      <span>✦</span> EMBEINGS AI
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#why-us">Why Us</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#diagnosis" class="nav-link-diagnosis"><span class="nav-diag-dot"></span> Free Diagnosis</a></li>
+    </ul>
+    <a href="https://embeings.io/contact" target="_blank" rel="noopener noreferrer" class="nav-cta">Book a Strategy Call</a>
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── HERO ──────────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-bottom"></div>
+
+  <div class="hero-content fade-up">
+    <div class="badge hero-badge">AI-Powered Healthcare Operations</div>
+    <h1 class="hero-heading">
+      <span class="hero-line-single">We Don't Just Digitize Clinics.</span><br>
+      <span class="star">✦</span> We <span class="accent">Rebuild</span> How<br>
+      They Operate.
+    </h1>
+    <p class="hero-sub">
+      For clinic owners and hospital administrators exhausted by manual workflows, missed appointments, and inefficient staff operations — we map how your healthcare facility actually works and deploy AI that actually fixes it.
+    </p>
+    <div class="hero-ctas">
+      <a href="#diagnosis" class="btn-primary">
+        Get Free Diagnosis
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#how-it-works" class="btn-secondary">
+        See How It Works
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Hero Image Showcase -->
+  <div class="hero-image-showcase fade-up" data-delay="3">
+    <div class="hero-img-inner">
+      <img
+        src="hero-image.png"
+        alt="Doctor with stethoscope using AI-powered medical tablet with holographic data interface"
+        loading="lazy"
+      >
+      <div class="hero-img-overlay"></div>
+      <div class="hero-img-bottom-bar">
+        <div class="hero-img-live">
+          <span class="live-dot"></span>
+          AI Systems Actively Running — 127 Facilities Optimized
+        </div>
+        <div class="hero-img-stats">
+          <div class="hero-img-stat">
+            <div class="hero-img-stat-num">40%</div>
+            <div class="hero-img-stat-label">Fewer No-Shows</div>
+          </div>
+          <div class="hero-img-stat">
+            <div class="hero-img-stat-num">3x</div>
+            <div class="hero-img-stat-label">Faster Throughput</div>
+          </div>
+          <div class="hero-img-stat">
+            <div class="hero-img-stat-num">30d</div>
+            <div class="hero-img-stat-label">Avg. Go-Live</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marquee -->
+  <div class="marquee-wrapper fade-up" data-delay="4">
+    <p class="marquee-label">Trusted &amp; Powered By</p>
+    <div style="position:relative; overflow:hidden;">
+      <div class="marquee-fade-left"></div>
+      <div class="marquee-fade-right"></div>
+      <div class="marquee-track" id="marqueeTrack">
+        <!-- Items duplicated for infinite loop -->
+        <div class="marquee-pill"><span class="marquee-dot"></span>OpenAI</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>Meta AI</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>HL7 FHIR</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>AWS HealthLake</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>WhatsApp Automation</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>Google Health</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>Twilio</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>OpenAI</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>Slack Automation</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>Meta Cloud API</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>AWS HealthLake</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>Epic Systems</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>Google Health</div>
+        <div class="marquee-pill"><span class="marquee-dot"></span>Twilio</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY US ─────────────────────────────────────────────────── -->
+<section id="why-us">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="badge">Why Us</div>
+      <h2>We're Not Here to Sell You Software. We're Here to Make Healthcare Work Smarter.</h2>
+    </div>
+
+    <div class="why-grid">
+      <article class="why-card fade-up" data-delay="1">
+        <div class="why-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3C9 3 6.5 5 6.5 7.5C6.5 8.5 6.9 9.4 7.5 10.1C6.6 10.6 6 11.5 6 12.5C6 13.7 6.8 14.7 7.9 15.1C7.6 15.5 7.5 16 7.5 16.5C7.5 18 8.7 19.2 10.2 19.5V21H13.8V19.5C15.3 19.2 16.5 18 16.5 16.5C16.5 16 16.4 15.5 16.1 15.1C17.2 14.7 18 13.7 18 12.5C18 11.5 17.4 10.6 16.5 10.1C17.1 9.4 17.5 8.5 17.5 7.5C17.5 5 15 3 12 3Z" stroke="#A8FF3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="10" cy="8" r="1" fill="#A8FF3E"/>
+            <circle cx="14" cy="8" r="1" fill="#A8FF3E"/>
+            <path d="M9 12h6" stroke="#A8FF3E" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Built Around Your Workflow</h3>
+        <p>We study how your clinic operates before touching a single tool — mapping patient flows, staff bottlenecks, and missed revenue opportunities.</p>
+      </article>
+
+      <article class="why-card fade-up" data-delay="2">
+        <div class="why-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="8" width="5" height="5" rx="1.5" stroke="#A8FF3E" stroke-width="1.5"/>
+            <rect x="16" y="8" width="5" height="5" rx="1.5" stroke="#A8FF3E" stroke-width="1.5"/>
+            <rect x="9.5" y="3" width="5" height="5" rx="1.5" stroke="#A8FF3E" stroke-width="1.5"/>
+            <rect x="9.5" y="16" width="5" height="5" rx="1.5" stroke="#A8FF3E" stroke-width="1.5"/>
+            <path d="M8 10.5h1.5M14.5 10.5H16" stroke="#A8FF3E" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M12 8V5M12 19v-3" stroke="#A8FF3E" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Human-Led. AI-Powered.</h3>
+        <p>There is always a real person accountable for every system we deploy. You will never be handed a chatbot and left alone with it. We are the humans behind the machine.</p>
+      </article>
+
+      <article class="why-card fade-up" data-delay="3">
+        <div class="why-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 8C17 5.8 14.8 4 12 4C9.2 4 7 5.8 7 8C7 9.4 7.8 10.6 9 11.4V13L12 14.5L15 13V11.4C16.2 10.6 17 9.4 17 8Z" stroke="#A8FF3E" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M9 17L6 18.5V20H18V18.5L15 17" stroke="#A8FF3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 14.5L12 16L15 14.5" stroke="#A8FF3E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Ongoing Clinical Partnership</h3>
+        <p>We don't disappear after deployment. We monitor, govern, and continuously optimize your AI systems as your practice grows.</p>
+      </article>
+    </div>
+
+    <div class="why-footer fade-up" data-delay="4">
+      <a href="#how-it-works" class="text-link">
+        See How We Work
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MISSION ────────────────────────────────────────────────── -->
+<section id="mission">
+  <div class="container">
+    <div class="mission-inner">
+      <div class="mission-left fade-up">
+        <div class="badge">Our Mission</div>
+        <h2>We Help Small Clinics and Growing Hospitals Run With the <span class="accent">Precision</span> of a Large Healthcare System — Without the Overhead.</h2>
+        <p>AI in healthcare should reduce complexity, not add to it. Every system we build has a clear clinical purpose, a clean operational process, and a real human strategist behind it. That's not automation — that's healthcare intelligence.</p>
+        <a href="#" class="text-link">
+          Let's Talk About Your Practice
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <div class="stats-grid fade-up" data-delay="2">
+        <div class="stat-block">
+          <div class="stat-number" data-target="30" data-suffix=" Days">0</div>
+          <div class="stat-label">Avg. Deployment Time</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-number" data-target="100" data-suffix="%">0</div>
+          <div class="stat-label">Custom-Built Architecture</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-number" data-target="3" data-suffix="x">0</div>
+          <div class="stat-label">Faster Patient Processing</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-number" data-target="24" data-suffix="/7">0</div>
+          <div class="stat-label">Governed AI Systems</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Image — full-width cinematic strip -->
+    <div class="mission-image-strip fade-up" data-delay="3">
+      <img
+        src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1400&q=80"
+        alt="Healthcare team using AI clinical workflow systems in a modern hospital"
+        loading="lazy"
+      >
+      <div class="mission-strip-overlay"></div>
+      <div class="mission-strip-content">
+        <div class="mission-strip-pills">
+          <span class="mission-strip-pill"><span class="live-dot" style="width:6px;height:6px;"></span> HIPAA Compliant</span>
+          <span class="mission-strip-pill">EMR Integrated</span>
+          <span class="mission-strip-pill">24/7 Monitored</span>
+        </div>
+        <p class="mission-strip-quote">"From appointment chaos to a fully automated patient journey — in under 30 days."</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ───────────────────────────────────────────── -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="badge">How It Works</div>
+      <h2>Live Systems. Real Clinical Outcomes.</h2>
+    </div>
+
+    <div class="how-layout">
+      <div>
+        <div class="steps-list">
+          <div class="step-item fade-up" data-delay="1">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <h3>Workflow Intelligence Audit</h3>
+              <p>We map how your clinic actually operates — patient journey, booking flow, staff tasks, and every manual step that slows you down.</p>
+            </div>
+          </div>
+          <div class="step-item fade-up" data-delay="2">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <h3>Operational System Design</h3>
+              <p>We design the complete AI system around your specific workflow. You review and approve before a single line is built.</p>
+            </div>
+          </div>
+          <div class="step-item fade-up" data-delay="3">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <h3>Deployment &amp; Go-Live</h3>
+              <p>We build, test, and go live with a monitored launch period. Your team is onboarded. Nothing breaks on day one.</p>
+            </div>
+          </div>
+          <div class="step-item fade-up" data-delay="4">
+            <div class="step-num">04</div>
+            <div class="step-content">
+              <h3>Governance &amp; Ongoing Optimisation</h3>
+              <p>Post-launch we monitor, manage issues, and refine as your practice evolves. Your system grows with you.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-row fade-up" data-delay="4">
+          <span class="metric-badge">30 Days Avg. Deployment</span>
+          <span class="metric-badge">100% Custom Build</span>
+          <span class="metric-badge">3x Faster Operations</span>
+          <span class="metric-badge">24/7 Governed Systems</span>
+        </div>
+      </div>
+
+      <!-- Dashboard Mockup -->
+      <div class="dashboard-card fade-up" data-delay="2">
+        <div class="dashboard-header">
+          <div class="dash-dot red"></div>
+          <div class="dash-dot yellow"></div>
+          <div class="dash-dot green"></div>
+          <span class="dashboard-title">EMBEINGS AI OPERATIONS DASHBOARD</span>
+        </div>
+        <div class="dashboard-body">
+          <div class="dash-kpi-row">
+            <div class="dash-kpi">
+              <div class="dash-kpi-label">PATIENTS TODAY</div>
+              <div class="dash-kpi-value green">124</div>
+            </div>
+            <div class="dash-kpi">
+              <div class="dash-kpi-label">NO-SHOW RATE</div>
+              <div class="dash-kpi-value">4.2%</div>
+            </div>
+            <div class="dash-kpi">
+              <div class="dash-kpi-label">AI TASKS DONE</div>
+              <div class="dash-kpi-value green">98%</div>
+            </div>
+          </div>
+          <!-- Bar Chart -->
+          <div class="dash-chart">
+            <div class="dash-chart-label">WEEKLY PATIENT FLOW — AI vs Manual</div>
+            <svg class="chart-svg" width="100%" height="90" viewBox="0 0 340 90" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#A8FF3E" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#A8FF3E" stop-opacity="0.2"/>
+                </linearGradient>
+              </defs>
+              <!-- Grid lines -->
+              <line x1="0" y1="22" x2="340" y2="22" stroke="#1a1a1a" stroke-width="1"/>
+              <line x1="0" y1="44" x2="340" y2="44" stroke="#1a1a1a" stroke-width="1"/>
+              <line x1="0" y1="66" x2="340" y2="66" stroke="#1a1a1a" stroke-width="1"/>
+              <!-- Bars AI -->
+              <rect x="10" y="30" width="22" height="55" rx="3" fill="url(#barGrad)"/>
+              <rect x="58" y="18" width="22" height="67" rx="3" fill="url(#barGrad)"/>
+              <rect x="106" y="25" width="22" height="60" rx="3" fill="url(#barGrad)"/>
+              <rect x="154" y="10" width="22" height="75" rx="3" fill="url(#barGrad)"/>
+              <rect x="202" y="20" width="22" height="65" rx="3" fill="url(#barGrad)"/>
+              <rect x="250" y="15" width="22" height="70" rx="3" fill="url(#barGrad)"/>
+              <rect x="298" y="8" width="22" height="77" rx="3" fill="url(#barGrad)"/>
+              <!-- Manual bars (dim) -->
+              <rect x="34" y="50" width="14" height="35" rx="3" fill="#2a2a2a"/>
+              <rect x="82" y="42" width="14" height="43" rx="3" fill="#2a2a2a"/>
+              <rect x="130" y="46" width="14" height="39" rx="3" fill="#2a2a2a"/>
+              <rect x="178" y="38" width="14" height="47" rx="3" fill="#2a2a2a"/>
+              <rect x="226" y="44" width="14" height="41" rx="3" fill="#2a2a2a"/>
+              <rect x="274" y="40" width="14" height="45" rx="3" fill="#2a2a2a"/>
+              <rect x="322" y="35" width="14" height="50" rx="3" fill="#2a2a2a"/>
+            </svg>
+          </div>
+          <!-- Line Chart -->
+          <div class="dash-chart">
+            <div class="dash-chart-label">AI TASK COMPLETION RATE — 30 Days</div>
+            <svg class="chart-svg" width="100%" height="70" viewBox="0 0 340 70" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#A8FF3E" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#A8FF3E" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <line x1="0" y1="20" x2="340" y2="20" stroke="#1a1a1a" stroke-width="1"/>
+              <line x1="0" y1="45" x2="340" y2="45" stroke="#1a1a1a" stroke-width="1"/>
+              <polyline points="0,55 40,48 80,42 120,35 160,28 200,20 240,15 280,12 340,8" fill="none" stroke="#A8FF3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polygon points="0,55 40,48 80,42 120,35 160,28 200,20 240,15 280,12 340,8 340,70 0,70" fill="url(#lineGrad)"/>
+              <!-- Dots -->
+              <circle cx="160" cy="28" r="3" fill="#A8FF3E"/>
+              <circle cx="280" cy="12" r="3" fill="#A8FF3E"/>
+              <circle cx="340" cy="8" r="3" fill="#A8FF3E"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ───────────────────────────────────────────────── -->
+<section id="services">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="badge">Our Services</div>
+      <h2>Healthcare Expertise That Drives Clinical Quality</h2>
+      <p class="section-sub">With deep domain expertise in clinical operations, we deliver AI solutions that drive patient outcomes and exceed industry compliance standards.</p>
+    </div>
+
+    <div class="services-grid">
+      <!-- Card 1 -->
+      <article class="service-card fade-up" data-delay="1">
+        <div class="service-visual">
+          <div class="flow-chart">
+            <div class="flow-node">📅 Appointment Booked</div>
+            <div class="flow-arrow"></div>
+            <div class="flow-node">🔔 Reminder Sent</div>
+            <div class="flow-arrow"></div>
+            <div class="flow-node">✅ Check-In</div>
+            <div class="flow-arrow"></div>
+            <div class="flow-node">👨‍⚕️ Doctor Notified</div>
+          </div>
+        </div>
+        <h3>Patient Flow Automation</h3>
+        <p>We automate the entire patient journey — from booking to discharge — reducing no-shows by up to 40%.</p>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="service-card fade-up" data-delay="2">
+        <div class="service-visual">
+          <div class="code-block">
+            <div class="code-line"><span class="code-num">1</span><span class="code-kw">agent</span> <span class="code-fn">IntakeAgent</span><span style="color:#888"> {</span></div>
+            <div class="code-line"><span class="code-num">2</span>&nbsp;&nbsp;<span class="code-kw">trigger:</span> <span class="code-str">"new_patient_form"</span></div>
+            <div class="code-line"><span class="code-num">3</span>&nbsp;&nbsp;<span class="code-kw">action:</span> <span class="code-fn">triage</span><span style="color:#888">(</span><span class="code-var">symptoms</span><span style="color:#888">)</span></div>
+            <div class="code-line"><span class="code-num">4</span>&nbsp;&nbsp;<span class="code-kw">route:</span> <span class="code-fn">assignDoctor</span><span style="color:#888">()</span></div>
+            <div class="code-line"><span class="code-num">5</span>&nbsp;&nbsp;<span class="code-cm">// HIPAA-compliant LLM</span></div>
+            <div class="code-line"><span class="code-num">6</span><span style="color:#888">}</span></div>
+          </div>
+        </div>
+        <h3>Custom Clinical AI Agents</h3>
+        <p>We build custom AI agents for intake forms, triage assistance, follow-up protocols, and patient education.</p>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="service-card fade-up" data-delay="3">
+        <div class="service-visual">
+          <div class="workflow">
+            <div class="wf-node highlight">Trigger</div>
+            <div class="wf-arrow"></div>
+            <div class="wf-node highlight">AI Triage</div>
+            <div class="wf-arrow"></div>
+            <div class="wf-node">Assign Dr.</div>
+            <div class="wf-arrow"></div>
+            <div class="wf-node">Send Report</div>
+          </div>
+        </div>
+        <h3>Smart Healthcare Automation</h3>
+        <p>We analyze your clinical operations and build smart automation that handles repetitive tasks so your staff focuses on care.</p>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="service-card fade-up" data-delay="4">
+        <div class="service-visual" style="flex-direction:column; gap:10px; align-items:stretch;">
+          <svg class="chart-svg" width="100%" height="60" viewBox="0 0 280 60" preserveAspectRatio="none">
+            <rect x="10" y="20" width="20" height="38" rx="3" fill="#A8FF3E" fill-opacity="0.7"/>
+            <rect x="44" y="10" width="20" height="48" rx="3" fill="#A8FF3E" fill-opacity="0.7"/>
+            <rect x="78" y="28" width="20" height="30" rx="3" fill="#A8FF3E" fill-opacity="0.7"/>
+            <rect x="112" y="5" width="20" height="53" rx="3" fill="#A8FF3E"/>
+            <rect x="146" y="18" width="20" height="40" rx="3" fill="#A8FF3E" fill-opacity="0.7"/>
+            <rect x="180" y="12" width="20" height="46" rx="3" fill="#A8FF3E" fill-opacity="0.7"/>
+            <rect x="214" y="3" width="20" height="55" rx="3" fill="#A8FF3E"/>
+            <polyline points="20,45 54,32 88,38 122,18 156,28 190,22 224,12 260,8" fill="none" stroke="#fff" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="4,2"/>
+          </svg>
+          <div style="display:flex; gap:12px; align-items:center; justify-content:center;">
+            <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-dim);">
+              <div style="width:10px;height:10px;border-radius:2px;background:var(--accent);opacity:0.7;flex-shrink:0;"></div>Revenue
+            </div>
+            <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text-dim);">
+              <div style="width:20px;height:1.5px;background:#fff;opacity:0.3;flex-shrink:0;"></div>Satisfaction
+            </div>
+          </div>
+        </div>
+        <h3>AI Analytics &amp; Reporting</h3>
+        <p>Real-time dashboards that give clinic owners full visibility into revenue cycles, patient satisfaction, and operational efficiency.</p>
+      </article>
+    </div>
+
+    <!-- Services Image Banner -->
+    <div class="services-image-banner fade-up" data-delay="2">
+      <img
+        class="svc-banner-img"
+        src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?auto=format&fit=crop&w=1400&q=80"
+        alt="Medical team collaborating with AI-powered healthcare systems"
+        loading="lazy"
+      >
+      <div class="svc-banner-overlay"></div>
+      <div class="svc-banner-content">
+        <div class="svc-banner-label">⬡ Real-World Impact</div>
+        <div class="svc-banner-heading">Built for the Clinicians Who Can't Afford Downtime.</div>
+        <div class="svc-banner-sub">Every automation we deploy is designed around how your team actually works — not how a generic SaaS product assumes you should.</div>
+      </div>
+    </div>
+
+    <!-- Tags Row -->
+    <div class="tags-row fade-up" data-delay="3">
+      <span class="tag-pill">Patient Flow AI</span>
+      <span class="tag-pill">Clinical NLP</span>
+      <span class="tag-pill">EMR Integration</span>
+      <span class="tag-pill">Telemedicine AI</span>
+      <span class="tag-pill">Revenue Cycle Automation</span>
+      <span class="tag-pill">HIPAA-Compliant LLMs</span>
+      <span class="tag-pill">Appointment Intelligence</span>
+      <span class="tag-pill">AI Triage Systems</span>
+      <span class="tag-pill">WhatsApp Health Bots</span>
+      <span class="tag-pill">Predictive Analytics</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CLINIC DIAGNOSIS TOOL ─────────────────────────────────── -->
+<section id="diagnosis">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="badge">Free Clinic Diagnosis</div>
+      <h2>Find Out Exactly Where Your Clinic Is <span class="accent">Losing Time & Revenue</span></h2>
+      <p class="section-sub">5 minutes. Completely free. Get a personalised diagnosis with your top 3 operational gaps — specific to your practice type and patient volume.</p>
+    </div>
+  </div>
+
+  <!-- Scoped diagnosis tool wrapper -->
+  <div id="cdt-wrap">
+    <style>
+      #cdt-wrap {
+        --cdt-bg:       #060e0d;
+        --cdt-bg2:      #0b1a17;
+        --cdt-bg3:      #0f2019;
+        --cdt-border:   #163028;
+        --cdt-border2:  #1e4035;
+        --cdt-text:     #dff2ec;
+        --cdt-muted:    #6fa896;
+        --cdt-muted2:   #335c4f;
+        --cdt-accent:   #10b981;
+        --cdt-accent2:  #22d3ee;
+        --cdt-accent-dark: #059669;
+        --cdt-accent-dim: rgba(16,185,129,0.12);
+        --cdt-accent-glow: rgba(16,185,129,0.28);
+        --cdt-neon:     #baff57;
+        --cdt-neon-dim: rgba(186,255,87,0.10);
+        --cdt-neon-glow: rgba(186,255,87,0.35);
+        --cdt-error:    #f87171;
+        --cdt-radius:   14px;
+        --cdt-green:    #34d399;
+        font-family: 'DM Sans', 'Inter', sans-serif;
+        background: var(--cdt-bg);
+        color: var(--cdt-text);
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid #1e4035;
+        max-width: 1200px;
+        margin: 0 auto 0;
+        box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+        background-image:
+          radial-gradient(ellipse 80% 60% at 50% -20%, rgba(16,185,129,0.12) 0%, transparent 70%),
+          radial-gradient(ellipse 40% 40% at 90% 100%, rgba(34,211,238,0.06) 0%, transparent 60%),
+          radial-gradient(ellipse 50% 40% at 0% 80%, rgba(5,150,105,0.08) 0%, transparent 60%);
+      }
+      #cdt-inner { max-width: 660px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+      #cdt-wrap .brand-bar { display:flex;align-items:center;justify-content:space-between;margin-bottom:2.25rem; }
+      #cdt-wrap .brand-logo { display:flex;align-items:center;gap:9px; }
+      #cdt-wrap .brand-cross { width:26px;height:26px;background:linear-gradient(135deg,rgba(186,255,87,0.15),rgba(16,185,129,0.15));border:1px solid rgba(186,255,87,0.4);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--cdt-neon);font-size:14px;box-shadow:0 0 10px rgba(186,255,87,0.2); }
+      #cdt-wrap .brand-name { font-family:'DM Serif Display',serif;font-size:14px;letter-spacing:-0.01em;background:linear-gradient(120deg,var(--cdt-neon) 0%,var(--cdt-accent) 60%,var(--cdt-accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+      #cdt-wrap .brand-badge { font-size:11px;font-weight:500;color:var(--cdt-neon);background:var(--cdt-neon-dim);border:1px solid rgba(186,255,87,0.2);border-radius:20px;padding:3px 12px; }
+      #cdt-wrap .prog-wrap { background:var(--cdt-border);border-radius:4px;height:3px;margin-bottom:2.75rem; }
+      #cdt-wrap .prog-fill { height:3px;border-radius:4px;width:6%;background:linear-gradient(90deg,var(--cdt-accent2),var(--cdt-accent),var(--cdt-neon));transition:width 0.45s cubic-bezier(.4,0,.2,1);box-shadow:0 0 14px rgba(186,255,87,0.55),0 0 6px rgba(16,185,129,0.6); }
+      #cdt-wrap .cdt-step { display:none; }
+      #cdt-wrap .cdt-step.active { display:block;animation:cdtFadeUp 0.3s ease; }
+      @keyframes cdtFadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+      #cdt-wrap .step-dots { display:flex;align-items:center;gap:6px;margin-bottom:2.5rem;margin-top:-2rem; }
+      #cdt-wrap .sdot { width:6px;height:6px;border-radius:50%;background:var(--cdt-border2);transition:all 0.3s ease;flex-shrink:0; }
+      #cdt-wrap .sdot.active { background:var(--cdt-neon);box-shadow:0 0 8px var(--cdt-neon);width:18px;border-radius:3px; }
+      #cdt-wrap .sdot.done { background:var(--cdt-accent); }
+      #cdt-wrap .prog-pct { margin-left:auto;font-size:11px;font-weight:600;color:var(--cdt-neon);letter-spacing:0.05em;text-transform:uppercase; }
+      #cdt-wrap .step-h { font-family:'DM Serif Display',serif;font-size:27px;color:var(--cdt-text);line-height:1.3;margin-bottom:8px; }
+      #cdt-wrap .step-h.grad { background:linear-gradient(130deg,var(--cdt-neon) 0%,var(--cdt-accent) 45%,var(--cdt-text) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+      #cdt-wrap .step-sub { font-size:14px;color:var(--cdt-muted);margin-bottom:2rem;line-height:1.75; }
+      #cdt-wrap .step-tag { font-size:11px;font-weight:700;letter-spacing:0.1em;color:var(--cdt-neon);text-transform:uppercase;margin-bottom:8px; }
+      #cdt-wrap .form-grid { display:grid;grid-template-columns:1fr 1fr;gap:1rem; }
+      #cdt-wrap .form-group { margin-bottom:1rem; }
+      #cdt-wrap label { display:block;font-size:11px;font-weight:600;color:var(--cdt-muted);margin-bottom:7px;letter-spacing:0.06em;text-transform:uppercase; }
+      #cdt-wrap label span { color:var(--cdt-neon); }
+      #cdt-wrap input, #cdt-wrap select, #cdt-wrap textarea { width:100%;border:1px solid var(--cdt-border);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'DM Sans','Inter',sans-serif;background:var(--cdt-bg2);color:var(--cdt-text);outline:none;transition:border-color 0.2s,box-shadow 0.2s; }
+      #cdt-wrap input::placeholder, #cdt-wrap textarea::placeholder { color:var(--cdt-muted2); }
+      #cdt-wrap select option { background:var(--cdt-bg2);color:var(--cdt-text); }
+      #cdt-wrap input:focus, #cdt-wrap select:focus, #cdt-wrap textarea:focus { border-color:var(--cdt-neon);box-shadow:0 0 0 3px rgba(186,255,87,0.12); }
+      #cdt-wrap textarea { resize:vertical;min-height:120px; }
+      #cdt-wrap .err { color:var(--cdt-error);font-size:12px;margin-top:8px;display:none; }
+      #cdt-wrap .seg-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:2rem; }
+      #cdt-wrap .seg-card { border:1px solid var(--cdt-border);border-radius:var(--cdt-radius);padding:18px 16px;cursor:pointer;transition:all 0.18s;background:var(--cdt-bg2); }
+      #cdt-wrap .seg-card:hover { border-color:var(--cdt-accent);background:var(--cdt-accent-dim);transform:translateY(-1px); }
+      #cdt-wrap .seg-card.selected { border:2px solid var(--cdt-neon);background:var(--cdt-neon-dim);box-shadow:0 0 20px rgba(186,255,87,0.12); }
+      #cdt-wrap .seg-card.selected .seg-title { color:var(--cdt-neon); }
+      #cdt-wrap .seg-card.selected .seg-icon { filter:drop-shadow(0 0 6px rgba(186,255,87,0.5)); }
+      #cdt-wrap .seg-icon { font-size:22px;display:block;margin-bottom:10px; }
+      #cdt-wrap .seg-title { font-size:14px;font-weight:600;color:var(--cdt-text); }
+      #cdt-wrap .seg-desc { font-size:12px;color:var(--cdt-muted2);margin-top:3px;line-height:1.4; }
+      #cdt-wrap .opt-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2rem; }
+      #cdt-wrap .opt-card { border:1px solid var(--cdt-border);border-radius:var(--cdt-radius);padding:15px 16px;cursor:pointer;transition:all 0.18s;background:var(--cdt-bg2); }
+      #cdt-wrap .opt-card:hover { border-color:var(--cdt-accent);background:var(--cdt-accent-dim);transform:translateY(-1px); }
+      #cdt-wrap .opt-card.selected { border-color:var(--cdt-neon);background:var(--cdt-neon-dim);box-shadow:0 0 14px rgba(186,255,87,0.10); }
+      #cdt-wrap .opt-card.selected .opt-t { color:var(--cdt-neon); }
+      #cdt-wrap .opt-icon { font-size:18px;display:block;margin-bottom:7px; }
+      #cdt-wrap .opt-t { font-size:14px;font-weight:500;color:var(--cdt-text);line-height:1.35; }
+      #cdt-wrap .opt-s { font-size:12px;color:var(--cdt-muted2);margin-top:4px; }
+      #cdt-wrap .check-list { display:grid;gap:9px;margin-bottom:2rem; }
+      #cdt-wrap .check-item { display:flex;align-items:center;gap:12px;border:1px solid var(--cdt-border);border-radius:10px;padding:13px 15px;cursor:pointer;transition:all 0.18s;background:var(--cdt-bg2); }
+      #cdt-wrap .check-item:hover { border-color:var(--cdt-accent);transform:translateX(2px); }
+      #cdt-wrap .check-item.selected { border-color:var(--cdt-neon);background:var(--cdt-neon-dim); }
+      #cdt-wrap .check-box { width:18px;height:18px;border:1.5px solid var(--cdt-border);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.18s;font-size:11px;font-weight:800;color:#060e0d; }
+      #cdt-wrap .check-item.selected .check-box { background:var(--cdt-neon);border-color:var(--cdt-neon);box-shadow:0 0 8px rgba(186,255,87,0.4); }
+      #cdt-wrap .check-label { font-size:14px;color:var(--cdt-text);line-height:1.4; }
+      #cdt-wrap .qnum { display:inline-block;background:var(--cdt-neon-dim);color:var(--cdt-neon);font-size:11px;font-weight:600;padding:3px 12px;border-radius:20px;margin-bottom:10px;letter-spacing:0.04em;border:1px solid var(--cdt-neon-glow); }
+      #cdt-wrap .cdt-nav { display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem; }
+      #cdt-wrap .btn-back { background:transparent;border:1px solid var(--cdt-border);color:var(--cdt-muted2);border-radius:10px;padding:10px 20px;font-size:14px;font-family:'DM Sans','Inter',sans-serif;cursor:pointer;transition:all 0.18s; }
+      #cdt-wrap .btn-back:hover { border-color:var(--cdt-neon);color:var(--cdt-neon); }
+      #cdt-wrap .btn-next { background:linear-gradient(135deg,var(--cdt-accent2),var(--cdt-accent),var(--cdt-neon));color:#060e0d;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;font-family:'DM Sans','Inter',sans-serif;cursor:pointer;transition:all 0.2s;letter-spacing:0.01em; }
+      #cdt-wrap .btn-next:hover { opacity:0.92;box-shadow:0 4px 24px rgba(186,255,87,0.35),0 2px 12px rgba(16,185,129,0.3); }
+      #cdt-wrap .btn-next:disabled { opacity:0.3;cursor:not-allowed;box-shadow:none; }
+      #cdt-wrap .score-banner { background:var(--cdt-bg2);border:1px solid var(--cdt-border2);border-left:4px solid var(--cdt-neon);border-radius:var(--cdt-radius);padding:1.5rem;margin-bottom:1.5rem;box-shadow:-2px 0 18px rgba(186,255,87,0.12); }
+      #cdt-wrap .score-h { font-family:'DM Serif Display',serif;font-size:20px;color:var(--cdt-text);line-height:1.45; }
+      #cdt-wrap .score-sub { font-size:14px;color:var(--cdt-muted);margin-top:10px;line-height:1.75; }
+      #cdt-wrap .score-label { font-size:11px;font-weight:600;letter-spacing:0.08em;color:var(--cdt-neon);text-transform:uppercase;margin-bottom:7px; }
+      #cdt-wrap .rec-card { border:1px solid var(--cdt-border);border-radius:var(--cdt-radius);padding:18px;margin-bottom:10px;background:var(--cdt-bg2);transition:all 0.22s;cursor:default;animation:cdtCardIn 0.4s ease both; }
+      #cdt-wrap .rec-card:nth-child(1){animation-delay:0.1s}
+      #cdt-wrap .rec-card:nth-child(2){animation-delay:0.22s}
+      #cdt-wrap .rec-card:nth-child(3){animation-delay:0.34s}
+      @keyframes cdtCardIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+      #cdt-wrap .rec-card:hover { border-color:rgba(186,255,87,0.3);transform:translateY(-2px);box-shadow:0 6px 24px rgba(186,255,87,0.08); }
+      #cdt-wrap .rec-row { display:flex;gap:14px; }
+      #cdt-wrap .rec-t { font-size:15px;font-weight:600;color:var(--cdt-text);margin-bottom:6px; }
+      #cdt-wrap .rec-b { font-size:13px;color:var(--cdt-muted);line-height:1.7; }
+      #cdt-wrap .rec-num { font-size:13px;font-weight:700;color:var(--cdt-neon);min-width:20px;margin-top:2px; }
+      #cdt-wrap .rec-imp { display:inline-block;background:var(--cdt-neon-dim);color:var(--cdt-neon);border:1px solid var(--cdt-neon-glow);font-size:12px;padding:3px 10px;border-radius:20px;margin-top:10px;font-weight:600; }
+      #cdt-wrap .next-box { border:1px solid var(--cdt-border);border-left:3px solid var(--cdt-neon);border-radius:var(--cdt-radius);padding:1.25rem 1.5rem;margin:1.5rem 0;background:var(--cdt-bg2);box-shadow:-2px 0 14px rgba(186,255,87,0.08); }
+      #cdt-wrap .next-tag { font-size:11px;font-weight:700;color:var(--cdt-neon);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px; }
+      #cdt-wrap .next-text { font-size:14px;color:var(--cdt-muted);line-height:1.75; }
+      #cdt-wrap .priority-tag { font-size:11px;font-weight:700;letter-spacing:0.09em;color:var(--cdt-neon);text-transform:uppercase;margin-bottom:1rem; }
+      #cdt-wrap .cta-box { background:linear-gradient(135deg,rgba(186,255,87,0.06),rgba(16,185,129,0.10),rgba(34,211,238,0.05));border:1px solid rgba(186,255,87,0.22);border-radius:var(--cdt-radius);padding:2rem;text-align:center;margin-top:1.5rem;box-shadow:0 0 40px rgba(186,255,87,0.06) inset;position:relative;overflow:hidden; }
+      #cdt-wrap .cta-box::before { content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(186,255,87,0.04),transparent);animation:cdtShimmer 4s ease-in-out infinite; }
+      @keyframes cdtShimmer { 0%{left:-100%} 100%{left:200%} }
+      #cdt-wrap .cta-box h3 { font-family:'DM Serif Display',serif;font-size:20px;color:var(--cdt-text);margin-bottom:0.75rem; }
+      #cdt-wrap .cta-box p { font-size:14px;color:var(--cdt-muted);margin-bottom:1.5rem;line-height:1.75; }
+      #cdt-wrap .cta-btn { display:inline-block;background:linear-gradient(135deg,var(--cdt-accent2),var(--cdt-accent),var(--cdt-neon));color:#060e0d;border-radius:10px;padding:13px 28px;font-size:14px;font-weight:700;text-decoration:none;transition:all 0.2s; }
+      #cdt-wrap .cta-btn:hover { opacity:0.9;box-shadow:0 4px 24px rgba(186,255,87,0.35); }
+      #cdt-wrap .trust-row { display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:1.25rem; }
+      #cdt-wrap .trust-tag { background:var(--cdt-bg2);border:1px solid var(--cdt-border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--cdt-muted2);transition:all 0.18s;cursor:default; }
+      #cdt-wrap .trust-tag:hover { border-color:var(--cdt-neon);color:var(--cdt-neon);background:var(--cdt-neon-dim); }
+      #cdt-wrap .saved-note { margin-top:1.5rem;background:var(--cdt-bg2);border:1px solid var(--cdt-border);border-radius:10px;padding:1rem;font-size:12px;color:var(--cdt-muted2);line-height:1.7; }
+      #cdt-wrap .saved-note strong { color:var(--cdt-neon); }
+      #cdt-wrap .profile-chip { display:inline-flex;align-items:center;gap:8px;background:var(--cdt-bg2);border:1px solid rgba(186,255,87,0.2);border-radius:24px;padding:6px 14px 6px 8px;margin-bottom:1.5rem; }
+      #cdt-wrap .profile-dot { width:8px;height:8px;border-radius:50%;background:var(--cdt-neon);flex-shrink:0;box-shadow:0 0 6px var(--cdt-neon);animation:cdtNeonPulse 2s ease-in-out infinite; }
+      @keyframes cdtNeonPulse { 0%,100%{box-shadow:0 0 4px var(--cdt-neon),0 0 8px rgba(186,255,87,0.4)} 50%{box-shadow:0 0 10px var(--cdt-neon),0 0 20px rgba(186,255,87,0.6)} }
+      #cdt-wrap .profile-txt { font-size:13px;color:var(--cdt-muted); }
+      #cdt-wrap .profile-txt strong { color:var(--cdt-text); }
+      #cdt-wrap .divider { border:none;border-top:1px solid var(--cdt-border);margin:1.5rem 0; }
+      #cdt-wrap .alert-band { display:flex;align-items:flex-start;gap:12px;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);border-radius:10px;padding:14px;margin-bottom:1.5rem; }
+      #cdt-wrap .alert-icon { font-size:18px;flex-shrink:0;margin-top:1px; }
+      #cdt-wrap .alert-txt { font-size:13px;color:#fca5a5;line-height:1.6; }
+      @media (max-width: 500px) {
+        #cdt-wrap .form-grid, #cdt-wrap .seg-grid, #cdt-wrap .opt-grid { grid-template-columns:1fr; }
+        #cdt-wrap .step-h { font-size:23px; }
+        #cdt-wrap .brand-bar { margin-bottom:1.5rem; }
+      }
+    </style>
+
+    <div id="cdt-inner">
+      <!-- Brand -->
+      <div class="brand-bar">
+        <div class="brand-logo">
+          <div class="brand-cross">✚</div>
+          <span class="brand-name">Embeings AI Clinical IQ</span>
+        </div>
+        <span class="brand-badge">Free Clinic Diagnosis</span>
+      </div>
+
+      <div class="prog-wrap"><div class="prog-fill" id="cdt-prog"></div></div>
+      <div class="step-dots" id="cdt-step-dots">
+        <span class="sdot active" id="csd0"></span>
+        <span class="sdot" id="csd1"></span>
+        <span class="sdot" id="csd2"></span>
+        <span class="sdot" id="csd3"></span>
+        <span class="sdot" id="csd4"></span>
+        <span class="sdot" id="csd5"></span>
+        <span class="sdot" id="csd6"></span>
+        <span class="prog-pct" id="cdt-prog-pct">Let's begin</span>
+      </div>
+
+      <!-- STEP 0: LEAD CAPTURE -->
+      <div class="cdt-step active" id="cdt-step-0">
+        <div class="step-tag">Free Healthcare Operations Diagnosis</div>
+        <div class="step-h grad">Find out exactly where your clinic is losing time and revenue.</div>
+        <div class="step-sub">5 minutes. Completely free. You'll receive a personalised diagnosis with your top 3 operational gaps — specific to your practice type and patient volume.</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Doctor / Owner Name <span>*</span></label><input id="cf-name" placeholder="Dr. Priya Mehta"></div>
+          <div class="form-group"><label>Clinic / Hospital Name <span>*</span></label><input id="cf-clinic" placeholder="Mehta Health Clinic"></div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group"><label>Your Role <span>*</span></label>
+            <select id="cf-role">
+              <option value="">Select your role</option>
+              <option>Owner / Practicing Doctor</option>
+              <option>Clinic / Hospital Manager</option>
+              <option>Admin / Operations Head</option>
+              <option>Receptionist / Front Desk</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>City <span>*</span></label><input id="cf-city" placeholder="Pune"></div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group"><label>WhatsApp / Mobile <span>*</span></label><input id="cf-phone" type="tel" placeholder="+91 98765 43210" oninput="cdtFormatPhone(this)"></div>
+          <div class="form-group"><label>Email Address <span>*</span></label><input id="cf-email" type="email" placeholder="doctor@yourclinic.com"></div>
+        </div>
+        <div id="cdt-lead-err" class="err">Please fill in all required fields with a valid email address.</div>
+        <div class="cdt-nav">
+          <div style="font-size:12px;color:var(--cdt-muted2)">Private. Used only to personalise your diagnosis.</div>
+          <button class="btn-next" onclick="cdtSubmitLead()">Start Diagnosis →</button>
+        </div>
+      </div>
+
+      <!-- STEP 1: PRACTICE TYPE -->
+      <div class="cdt-step" id="cdt-step-1">
+        <div class="step-tag">Step 1 of 6</div>
+        <div class="step-h">What type of practice do you run?</div>
+        <div class="step-sub">Select the option that best describes your setup. This shapes every recommendation.</div>
+        <div class="seg-grid">
+          <div class="seg-card" data-seg="general" onclick="cdtSelSeg(this)"><span class="seg-icon">🩺</span><div class="seg-title">General / Family Medicine</div><div class="seg-desc">GP, physician, family doctor</div></div>
+          <div class="seg-card" data-seg="dental" onclick="cdtSelSeg(this)"><span class="seg-icon">🦷</span><div class="seg-title">Dental Clinic</div><div class="seg-desc">Dentist, orthodontist, oral surgeon</div></div>
+          <div class="seg-card" data-seg="ortho" onclick="cdtSelSeg(this)"><span class="seg-icon">🦴</span><div class="seg-title">Ortho / Physiotherapy</div><div class="seg-desc">Orthopaedic, physio, rehab center</div></div>
+          <div class="seg-card" data-seg="paeds" onclick="cdtSelSeg(this)"><span class="seg-icon">👶</span><div class="seg-title">Paediatrics / Child Care</div><div class="seg-desc">Paediatrician, child specialist</div></div>
+          <div class="seg-card" data-seg="mental" onclick="cdtSelSeg(this)"><span class="seg-icon">🧠</span><div class="seg-title">Mental Health / Psychiatry</div><div class="seg-desc">Psychiatrist, psychologist, therapist</div></div>
+          <div class="seg-card" data-seg="lab" onclick="cdtSelSeg(this)"><span class="seg-icon">🔬</span><div class="seg-title">Diagnostic Lab / Imaging</div><div class="seg-desc">Pathology lab, X-ray, MRI, ultrasound</div></div>
+          <div class="seg-card" data-seg="hospital" onclick="cdtSelSeg(this)"><span class="seg-icon">🏥</span><div class="seg-title">Multi-Specialty / Hospital</div><div class="seg-desc">Small hospital, nursing home, polyclinic</div></div>
+          <div class="seg-card" data-seg="other" onclick="cdtSelSeg(this)"><span class="seg-icon">➕</span><div class="seg-title">Other Specialty</div><div class="seg-desc">Dermatology, ENT, gynaecology, etc.</div></div>
+        </div>
+        <div class="cdt-nav">
+          <button class="btn-back" onclick="cdtGoStep(0)">← Back</button>
+          <button class="btn-next" id="cdt-btn-1" disabled onclick="cdtGoStep(2)">Next →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="cdt-step" id="cdt-step-2">
+        <div class="step-tag">Step 2 of 6</div><div class="qnum">Question 1 of 4</div>
+        <div class="step-h" id="cs2-h"></div><div class="opt-grid" id="cs2-opts"></div>
+        <div class="cdt-nav"><button class="btn-back" onclick="cdtGoStep(1)">← Back</button><button class="btn-next" id="cdt-btn-2" disabled onclick="cdtGoStep(3)">Next →</button></div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="cdt-step" id="cdt-step-3">
+        <div class="step-tag">Step 3 of 6</div><div class="qnum">Question 2 of 4</div>
+        <div class="step-h" id="cs3-h"></div><div class="opt-grid" id="cs3-opts"></div>
+        <div class="cdt-nav"><button class="btn-back" onclick="cdtGoStep(2)">← Back</button><button class="btn-next" id="cdt-btn-3" disabled onclick="cdtGoStep(4)">Next →</button></div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="cdt-step" id="cdt-step-4">
+        <div class="step-tag">Step 4 of 6</div><div class="qnum">Question 3 of 4</div>
+        <div class="step-h" id="cs4-h"></div>
+        <div class="step-sub">Select all that currently apply to your clinic.</div>
+        <div class="check-list" id="cs4-opts"></div>
+        <div class="cdt-nav"><button class="btn-back" onclick="cdtGoStep(3)">← Back</button><button class="btn-next" id="cdt-btn-4" disabled onclick="cdtGoStep(5)">Next →</button></div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="cdt-step" id="cdt-step-5">
+        <div class="step-tag">Step 5 of 6</div><div class="qnum">Question 4 of 4</div>
+        <div class="step-h" id="cs5-h"></div><div class="opt-grid" id="cs5-opts"></div>
+        <div class="cdt-nav"><button class="btn-back" onclick="cdtGoStep(4)">← Back</button><button class="btn-next" id="cdt-btn-5" disabled onclick="cdtGoStep(6)">Next →</button></div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="cdt-step" id="cdt-step-6">
+        <div class="step-tag">Step 6 of 6 — Last One</div><div class="qnum">Final Question</div>
+        <div class="step-h">If one thing at your clinic ran perfectly from tomorrow — what would that be?</div>
+        <div class="step-sub">Be specific or broad. This is the most valuable input for your personalised diagnosis. Your answer directly shapes our recommendations.</div>
+        <textarea id="cs6-txt" placeholder="e.g. Patients getting automatic reminders and we stop losing 8–10 appointments a week to no-shows…"></textarea>
+        <div class="cdt-nav" style="margin-top:1rem">
+          <button class="btn-back" onclick="cdtGoStep(5)">← Back</button>
+          <button class="btn-next" onclick="cdtBuildResults()">Get My Diagnosis →</button>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="cdt-step" id="cdt-step-res">
+        <div class="step-tag">Your Free Diagnosis Is Ready</div>
+        <div id="cr-profile" class="profile-chip">
+          <div class="profile-dot"></div>
+          <div class="profile-txt"><strong id="cr-profile-name"></strong> · <span id="cr-profile-type"></span><span id="cr-profile-phone" style="color:var(--cdt-muted2)"></span></div>
+        </div>
+        <div class="score-banner">
+          <div class="score-label" id="cr-clinic"></div>
+          <div class="score-h" id="cr-h"></div>
+          <div class="score-sub" id="cr-sub"></div>
+        </div>
+        <div id="cr-alert" class="alert-band" style="display:none">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-txt" id="cr-alert-txt"></div>
+        </div>
+        <div class="priority-tag">Your Top 3 Priorities</div>
+        <div id="cr-recs"></div>
+        <div class="next-box">
+          <div class="next-tag">Recommended First Step</div>
+          <div class="next-text" id="cr-next"></div>
+        </div>
+        <div class="cta-box">
+          <h3>Want a custom roadmap for <span id="cr-cta-clinic"></span>?</h3>
+          <p>Book a free 30-minute clinic assessment call. We'll map your exact workflow, identify where you're losing patients and revenue, and show you what a fixed system looks like — before you commit to anything.</p>
+          <a class="cta-btn" href="#">Book My Free Clinic Assessment →</a>
+          <div class="trust-row">
+            <span class="trust-tag">No commitment</span>
+            <span class="trust-tag">30 minutes</span>
+            <span class="trust-tag">Healthcare-specific</span>
+            <span class="trust-tag">No sales pressure</span>
+          </div>
+        </div>
+        <div class="saved-note"><strong>Your answers have been saved.</strong> Our team will review your diagnosis before the call — so your 30 minutes is spent on your clinic's specific solutions, not generic explanations. Expect a WhatsApp confirmation shortly.</div>
+      </div>
+
+    </div><!-- /cdt-inner -->
+  </div><!-- /cdt-wrap -->
+</section>
+
+<script>
+/* ── Diagnosis Tool State ── */
+const CDT = { name:'',clinic:'',role:'',city:'',phone:'',email:'',seg:'',s2:'',s3:'',s4:[],s5:'',s6:'' };
+const CDT_SD = {
+  general:{s2h:'How many patients do you typically see per day?',s2:[{i:'🌱',t:'Fewer than 15',s:'Early stage / part-time'},{i:'🌿',t:'15 – 30 patients',s:'Steady flow'},{i:'🌳',t:'30 – 60 patients',s:'Busy OPD'},{i:'🔥',t:'60+ patients',s:'High-volume clinic'}],s3h:'How do you currently manage appointments and patient records?',s3:[{i:'📋',t:'Paper registers & phone calls',s:'Fully manual'},{i:'📊',t:'Excel / WhatsApp groups',s:'Basic digital'},{i:'💻',t:'Simple booking software',s:'Partial digital'},{i:'🏥',t:'Full HMS / EHR system',s:'Fully integrated'}],s4h:'Which of these are active problems at your clinic?',s4:['Patients forgetting or missing appointments (no-shows)','Long waiting times and patient complaints','Patient records hard to find or scattered across files','Billing errors, delayed payments or insurance backlogs','Lab / test results not communicated to patients on time','Patients not returning for follow-ups or second visits','Front desk overwhelmed with appointment calls all day','No clear data on clinic revenue, growth or trends'],s5h:'Where does your clinic lose the most revenue or time right now?',s5:[{t:'No-shows — empty slots that could have been filled'},{t:'Manual billing and slow payment collection'},{t:"Poor patient retention — one visit and they're gone"},{t:'Admin staff doing repetitive tasks instead of patient care'},{t:"No visibility into what's growing or slipping"},{t:'All of the above — it\'s across multiple areas'}]},
+  dental:{s2h:'How many dental procedures or appointments do you handle per day?',s2:[{i:'🌱',t:'Fewer than 8',s:'Boutique / part-time'},{i:'🌿',t:'8 – 15 appointments',s:'Standard schedule'},{i:'🌳',t:'15 – 25 appointments',s:'Busy chair'},{i:'🔥',t:'25+ appointments',s:'Multi-chair / chain'}],s3h:'How do you currently manage patient scheduling and clinical records?',s3:[{i:'📋',t:'Paper registers & phone calls',s:'Fully manual'},{i:'📊',t:'Excel / WhatsApp tracking',s:'Basic digital'},{i:'💻',t:'Dental software (partial)',s:'Partial digital'},{i:'🏥',t:'Integrated dental HMS',s:'Fully digital'}],s4h:'Which of these problems do you currently face?',s4:['Patients missing follow-up appointments and not returning','No-shows leaving dental chairs idle and revenue lost','Patients unaware of pending treatments or due recalls','Treatment plan details lost or hard to track across visits','Payment collection delayed or not followed up on','Patients leaving for other dentists without any win-back','Staff manually calling all reminders and confirmations','No organised way to track treatment progress per patient'],s5h:'Which is your biggest operational pain point?',s5:[{t:'Empty chairs from no-shows and cancellations'},{t:'Patients not returning for follow-up treatments'},{t:'Slow or incomplete payment collection'},{t:'Treatment records not accessible quickly during consultation'},{t:'No patient recall or reactivation system'},{t:'Everything above — spread across multiple gaps'}]},
+  ortho:{s2h:'How many sessions or consultations do you handle per day?',s2:[{i:'🌱',t:'Fewer than 10',s:'Clinic or part-time'},{i:'🌿',t:'10 – 20 sessions',s:'Steady load'},{i:'🌳',t:'20 – 35 sessions',s:'Busy practice'},{i:'🔥',t:'35+ sessions',s:'Multi-therapist / rehab centre'}],s3h:'How do you manage patient sessions and progress tracking?',s3:[{i:'📋',t:'Handwritten notes & calls',s:'Fully manual'},{i:'📊',t:'Excel / basic sheets',s:'Basic digital'},{i:'💻',t:'Physio or clinic software',s:'Partial digital'},{i:'🏥',t:'Full integrated system',s:'Fully digital'}],s4h:'Which of these challenges exist in your practice?',s4:['Patients dropping mid-treatment before completion','No structured home exercise or care instructions sent','Missed sessions not followed up to rebook','Progress notes scattered and hard to retrieve quickly','Referrals not tracked — you lose patients at transition','Staff manually managing all appointment reminders','No data on patient outcomes or session completion rates'],s5h:'Where does your practice lose the most value?',s5:[{t:'Patients quitting treatment prematurely'},{t:'Missed or cancelled sessions not recovered'},{t:'No system for tracking patient progress over time'},{t:'Referral patients lost between handoffs'},{t:'Staff doing repetitive admin instead of patient care'},{t:'All of the above — multiple gaps'}]},
+  paeds:{s2h:'How many child consultations do you handle per day?',s2:[{i:'🌱',t:'Fewer than 15',s:'Smaller load'},{i:'🌿',t:'15 – 30',s:'Standard OPD'},{i:'🌳',t:'30 – 55',s:'Busy practice'},{i:'🔥',t:'55+',s:'High-volume paeds OPD'}],s3h:'How do you manage appointment booking and vaccination records?',s3:[{i:'📋',t:'Manual registers & calls',s:'Fully manual'},{i:'📊',t:'Excel / basic tracking',s:'Basic digital'},{i:'💻',t:'Partial software',s:'Some automation'},{i:'🏥',t:'Integrated paeds HMS',s:'Fully digital'}],s4h:'Which of these are current challenges?',s4:['Parents forgetting or missing vaccination due dates','Milestone tracking not done systematically','Long waiting times causing parent frustration','No automated well-child or annual check-up reminders','Billing for packages or immunisation plans is manual','Front desk overwhelmed during school holiday rush','Patient history hard to access during busy OPD','Parents leaving for another paediatrician without follow-up'],s5h:'Where is your practice losing the most?',s5:[{t:'Missed vaccination visits and immunisation no-shows'},{t:'Families not returning for annual or follow-up check-ups'},{t:'Admin overload during peak seasons'},{t:'No structured recall or milestone reminder system'},{t:'Billing and package tracking done manually'},{t:"Multiple areas — it's across the board"}]},
+  mental:{s2h:'How many therapy sessions or consultations do you handle per week?',s2:[{i:'🌱',t:'Fewer than 15/week',s:'Solo or part-time'},{i:'🌿',t:'15 – 30/week',s:'Growing practice'},{i:'🌳',t:'30 – 50/week',s:'Full schedule'},{i:'🔥',t:'50+/week',s:'Group practice / clinic'}],s3h:'How do you currently manage client scheduling and session notes?',s3:[{i:'📋',t:'Manual scheduling & paper notes',s:'Fully manual'},{i:'📊',t:'Spreadsheet / calendar apps',s:'Basic digital'},{i:'💻',t:'Partial practice management tool',s:'Partial digital'},{i:'🏥',t:'Integrated EHR / mental health platform',s:'Fully digital'}],s4h:'Which of these are current challenges at your practice?',s4:['Clients missing appointments and no reminders in place','No structured between-session check-ins or exercises sent','Consent forms, intake assessments done on paper','Progress notes take too long to write and organise','Clients disengaging before completing their treatment plan','Billing and invoice tracking is largely manual','No waitlist management — gaps when clients cancel','No referral or re-engagement system for inactive clients'],s5h:'Where does your practice lose the most time or clients?',s5:[{t:'No-shows and last-minute cancellations'},{t:'Client dropout before completing therapy'},{t:'Admin overhead eating into clinical time'},{t:'No system to re-engage lapsed clients'},{t:'Consent and intake paperwork slowing onboarding'},{t:'Several areas — spread across the practice'}]},
+  lab:{s2h:'How many tests or reports do you process per day?',s2:[{i:'🌱',t:'Fewer than 30 tests',s:'Small / local lab'},{i:'🌿',t:'30 – 80 tests',s:'Mid-size facility'},{i:'🌳',t:'80 – 150 tests',s:'Busy lab'},{i:'🔥',t:'150+ tests',s:'High-volume diagnostic centre'}],s3h:'How do you handle report delivery and patient communication?',s3:[{i:'📋',t:'Manual calls & physical reports',s:'Fully manual'},{i:'📊',t:'WhatsApp for report sharing',s:'Basic digital'},{i:'💻',t:'LIS (Lab Information System)',s:'Partial digital'},{i:'🏥',t:'Integrated LIS + patient portal',s:'Fully digital'}],s4h:'Which of these are operational issues you face?',s4:['Patients calling repeatedly to check if reports are ready','Report delivery delays causing patient complaints','Sample collection scheduling done manually','Doctor referral tracking is not organised','Payment collection before report release is not automated','Critical value alerts not communicated promptly','No automated reminder for fasting instructions pre-test','No system to retain customers or attract repeat bookings'],s5h:'Where does your diagnostic centre lose the most?',s5:[{t:'Inbound calls overloading staff with report queries'},{t:'Delayed report delivery and patient dissatisfaction'},{t:'Losing referral doctors due to poor communication'},{t:'Payment collection gaps before report release'},{t:'No patient retention or loyalty system'},{t:'Multiple operational gaps across the centre'}]},
+  hospital:{s2h:'How many OPD visits or admissions do you handle per day?',s2:[{i:'🌱',t:'Fewer than 30 OPD/day',s:'Small nursing home'},{i:'🌿',t:'30 – 80/day',s:'Medium polyclinic'},{i:'🌳',t:'80 – 150/day',s:'Busy hospital'},{i:'🔥',t:'150+/day',s:'High-volume hospital'}],s3h:'What best describes your current operational setup?',s3:[{i:'📋',t:'Mostly manual / paper-based',s:'Minimal digital'},{i:'📊',t:'Basic HMS, partial adoption',s:'Low integration'},{i:'💻',t:'Moderate HMS usage',s:'Functional but fragmented'},{i:'🏥',t:'Fully integrated HMS + digital',s:'Advanced digital'}],s4h:'Which of these are ongoing operational challenges?',s4:['Appointment and OPD queue management is chaotic','Patient discharge and billing process is slow and error-prone','Inter-department communication gaps causing delays','Patient records not easily accessible across departments','No structured post-discharge follow-up system','Staff coordination and duty scheduling is manual','Insurance and TPA claims process is slow and leaky','No visibility on bed occupancy, revenue or KPIs in real time'],s5h:'Where does your hospital lose the most time or revenue?',s5:[{t:'Discharge and billing delays causing patient frustration'},{t:'Insurance claim errors and TPA rejection rates'},{t:'Poor post-discharge follow-up and readmission prevention'},{t:'Staff coordination gaps across departments'},{t:'No real-time data for management decisions'},{t:'Multiple areas — across OPD, billing, and coordination'}]},
+  other:{s2h:'How many patients or consultations do you handle per day?',s2:[{i:'🌱',t:'Fewer than 15',s:'Boutique / part-time'},{i:'🌿',t:'15 – 30',s:'Steady flow'},{i:'🌳',t:'30 – 60',s:'Busy practice'},{i:'🔥',t:'60+',s:'High-volume clinic'}],s3h:'How do you currently manage appointments and patient data?',s3:[{i:'📋',t:'Paper & manual calls',s:'Fully manual'},{i:'📊',t:'Excel / basic apps',s:'Basic digital'},{i:'💻',t:'Clinic software (partial)',s:'Partial digital'},{i:'🏥',t:'Full HMS / EHR system',s:'Fully integrated'}],s4h:'Which of these are active problems at your clinic?',s4:['No-shows and missed appointments','Patients not returning for follow-up visits','Billing errors or delayed payment collection','Admin staff overwhelmed with manual tasks','Patient records scattered and hard to access','Long waiting times and patient dissatisfaction','No system to track outcomes or clinic performance','Poor communication with patients between visits'],s5h:'Where does your clinic lose the most time or revenue?',s5:[{t:'No-shows and unfilled appointment slots'},{t:'Patients not returning after first visit'},{t:'Billing and payment delays'},{t:'Admin overload reducing quality of care'},{t:'No data or visibility on practice performance'},{t:'Multiple gaps — across several areas'}]}
+};
+const CDT_RECS = {
+  general:[{t:'Smart Appointment & Reminder System',b:'Patients book via WhatsApp or online and receive automatic reminders 24h and 2h before their slot. No-show rates drop immediately. Your front desk stops spending half the day on the phone confirming appointments.',imp:'Reduce no-shows by 35–50%'},{t:'Post-Visit Follow-Up Automation',b:'Every patient who leaves your clinic receives a structured follow-up — care instructions, review reminders, and prescription refill nudges sent at the right interval. Patients return because you stayed in touch.',imp:'Recover 25–40% of lapsed patients'},{t:'Billing & Payment Recovery System',b:"Automated billing reminders, digital receipts, and outstanding payment follow-ups mean you collect what you're owed without awkward manual calls.",imp:'Reduce pending collections by 60–70%'}],
+  dental:[{t:'Dental Recall & Treatment Follow-Up System',b:'Every patient who leaves with a pending treatment receives automated recall messages at the right interval. Incomplete cases get completed. Chairs fill themselves.',imp:'Complete 30–45% more treatment plans'},{t:'Appointment Confirmation & No-Show Prevention',b:'Automated confirmations and reminders via WhatsApp eliminate the phone-tag cycle your front desk runs every morning.',imp:'Cut no-shows by up to 40%'},{t:'Patient Reactivation Campaign',b:"Patients who haven't visited in 6–12 months receive a personalised re-engagement message with a recall reason.",imp:'Reactivate 20–30% of inactive patients'}],
+  ortho:[{t:'Session Adherence & Dropout Prevention System',b:'Patients mid-treatment receive structured check-ins, home exercise reminders, and progress prompts between sessions. Dropout rates fall when patients feel continuously supported.',imp:'Improve treatment completion by 35–50%'},{t:'Missed Session Recovery Workflow',b:'Every missed or cancelled session triggers an immediate rebooking prompt. The gap in your schedule gets filled automatically.',imp:'Recover 50–60% of missed session revenue'},{t:'Referral Coordination & Handoff Tracking',b:'Every referred patient is tracked from the moment they leave your hands. Referring doctors receive structured updates.',imp:'Reduce referral dropout by 40%'}],
+  paeds:[{t:'Vaccination & Milestone Reminder System',b:'Every child registered at your practice receives age-appropriate vaccination reminders, milestone check-up alerts, and annual review nudges — sent automatically to parents at the right time.',imp:'Increase immunisation compliance by 40–60%'},{t:'Parent Communication Automation',b:'Prescription instructions, care notes, and follow-up guidance sent directly to parents after every visit via WhatsApp.',imp:'Cut inbound parent calls by 35–40%'},{t:'Seasonal & Rush Management System',b:'Auto-confirmation, waitlist management, and bulk appointment scheduling during school holidays and flu season.',imp:'Handle 2x volume with same staff'}],
+  mental:[{t:'Client Engagement & Between-Session Support',b:'Structured check-in messages, reflection prompts, and homework reminders sent to clients between sessions. Clients stay engaged and progress faster.',imp:'Reduce client dropout by 30–45%'},{t:'Automated Intake & Consent Workflow',b:'New clients complete intake forms, consent documents, and initial assessments digitally before their first session.',imp:'Save 20–30 min per new client intake'},{t:'No-Show & Waitlist Management',b:'Cancellations trigger an automatic waitlist fill. Your schedule stays full without manual intervention.',imp:'Fill 80%+ of cancelled slots automatically'}],
+  lab:[{t:'Automated Report Ready Notification System',b:'The moment a report is ready, the patient receives an automatic WhatsApp message with a secure download link. Inbound query calls drop to near zero.',imp:'Eliminate 70–80% of report query calls'},{t:'Pre-Test Preparation & Appointment Reminders',b:'Patients booked for fasting tests or imaging receive automatic preparation instructions the night before.',imp:'Reduce repeat visits from poor preparation by 50%'},{t:'Referral Doctor Relationship System',b:'Referring doctors receive automated test summary updates and result notifications for their patients.',imp:'Increase referral loyalty by 35–50%'}],
+  hospital:[{t:'OPD Queue & Appointment Management',b:'Patients book slots digitally, receive token numbers, and get queue position updates via WhatsApp. OPD flow becomes predictable and manageable.',imp:'Reduce OPD waiting time by 40–50%'},{t:'Post-Discharge Follow-Up Protocol',b:'Every discharged patient receives a structured care follow-up at 24h, 72h, and 7-day intervals. Complications are caught early.',imp:'Reduce 30-day readmissions by 25–35%'},{t:'Billing & Insurance Claims Automation',b:'Structured billing workflows, automated TPA submission tracking, and error-checking before submission reduce claim rejections.',imp:'Reduce billing errors and claim rejections by 50%'}],
+  other:[{t:'Appointment & No-Show Prevention System',b:'Automated booking confirmations and smart reminders ensure your schedule stays full. Patients confirm or reschedule before the day.',imp:'Reduce no-shows by 35–50%'},{t:'Patient Retention & Follow-Up Automation',b:'Every patient who visits receives a structured follow-up sequence — care reminders, review nudges, and re-engagement prompts.',imp:'Increase patient return rate by 30–40%'},{t:'Front Desk Efficiency & Admin Automation',b:'Repetitive admin tasks — confirmations, reminders, billing follow-ups — run automatically. Your staff focuses on patient experience.',imp:'Save 2–3 hours of admin time per day'}]
+};
+const CDT_NEXT = {
+  general:'Start with your appointment reminder and no-show prevention system. It has the fastest visible impact — your front desk will feel the change in week one.',
+  dental:'Start with your dental recall system. Most dental clinics have 30–50% of patients with incomplete or overdue treatments.',
+  ortho:'Start with your session adherence and dropout prevention workflow. Fixing this single gap has the highest immediate clinical and financial impact.',
+  paeds:'Start with your vaccination and milestone reminder system. It directly improves child health outcomes and keeps families engaged with your practice.',
+  mental:'Start with your intake and consent automation. It immediately reduces friction for new clients and saves significant admin time.',
+  lab:'Start with your report ready notification system. It is the highest-frequency patient touchpoint you have — and the one creating the most inbound call volume.',
+  hospital:'Start with your OPD appointment and queue management system. It creates an immediate improvement in patient experience that management can see immediately.',
+  other:'Start with your appointment reminder and no-show prevention workflow — the single most universal revenue leak across all clinic types.'
+};
+const CDT_SEG_LABELS = {general:'General / Family Medicine',dental:'Dental Clinic',ortho:'Ortho / Physiotherapy',paeds:'Paediatrics / Child Care',mental:'Mental Health / Psychiatry',lab:'Diagnostic Lab / Imaging',hospital:'Multi-Specialty / Hospital',other:'Other Specialty'};
+const CDT_PROG_VALS = [6,15,28,42,58,74,90];
+const CDT_PCT = ["Let's begin",'Step 1 of 6','Step 2 of 6','Step 3 of 6','Step 4 of 6','Step 5 of 6','Final step','Complete ✓'];
+const CDT_ALERT = {
+  tech_gap:'Your clinic is still operating on paper or basic spreadsheets while managing a significant patient volume. This creates a high risk of errors, data loss, and patient dissatisfaction.',
+  high_volume_manual:"You're managing a high patient volume with manual systems. This is one of the most common causes of staff burnout and patient complaints. Addressing the operational gaps now prevents a much larger problem later."
+};
+
+function cdtFormatPhone(el){
+  let v=el.value.replace(/[^\d+]/g,'');
+  if(v.startsWith('+')){const cc=v.slice(0,3);const rest=v.slice(3).replace(/\D/g,'');if(rest.length<=5)el.value=cc+' '+rest;else el.value=cc+' '+rest.slice(0,5)+' '+rest.slice(5,10);}
+  else{v=v.replace(/\D/g,'');if(v.length<=5)el.value=v;else el.value=v.slice(0,5)+' '+v.slice(5,10);}
+}
+function cdtSubmitLead(){
+  const n=document.getElementById('cf-name').value.trim(),cl=document.getElementById('cf-clinic').value.trim(),r=document.getElementById('cf-role').value,cy=document.getElementById('cf-city').value.trim(),p=document.getElementById('cf-phone').value.trim(),e=document.getElementById('cf-email').value.trim();
+  const err=document.getElementById('cdt-lead-err');
+  if(!n||!cl||!r||!cy||!p||!e||!e.includes('@')){err.style.display='block';return;}
+  err.style.display='none';
+  Object.assign(CDT,{name:n,clinic:cl,role:r,city:cy,phone:p,email:e});
+  cdtGoStep(1);
+}
+function cdtSelSeg(el){
+  document.querySelectorAll('#cdt-wrap .seg-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');CDT.seg=el.dataset.seg;
+  document.getElementById('cdt-btn-1').disabled=false;
+}
+function cdtBuildQ(stepN,qKey,gridId,btnId,multi){
+  const d=CDT_SD[CDT.seg];
+  const headId='cs'+stepN+'-h';
+  if(document.getElementById(headId))document.getElementById(headId).textContent=d[qKey+'h'];
+  const g=document.getElementById(gridId);g.innerHTML='';
+  if(multi){
+    CDT[qKey]=[];
+    d[qKey].forEach(txt=>{
+      const div=document.createElement('div');div.className='check-item';
+      div.innerHTML=`<div class="check-box"></div><span class="check-label">${txt}</span>`;
+      div.onclick=()=>{div.classList.toggle('selected');const box=div.querySelector('.check-box');if(div.classList.contains('selected')){box.textContent='✓';CDT[qKey].push(txt);}else{box.textContent='';CDT[qKey]=CDT[qKey].filter(x=>x!==txt);}document.getElementById(btnId).disabled=CDT[qKey].length===0;};
+      g.appendChild(div);
+    });
+  } else {
+    d[qKey].forEach(o=>{
+      const div=document.createElement('div');div.className='opt-card';
+      let inner='';if(o.i)inner+=`<span class="opt-icon">${o.i}</span>`;inner+=`<div class="opt-t">${o.t}</div>`;if(o.s)inner+=`<div class="opt-s">${o.s}</div>`;
+      div.innerHTML=inner;
+      div.onclick=()=>{g.querySelectorAll('.opt-card').forEach(c=>c.classList.remove('selected'));div.classList.add('selected');CDT[qKey]=o.t;document.getElementById(btnId).disabled=false;};
+      g.appendChild(div);
+    });
+  }
+}
+function cdtBuildResults(){
+  CDT.s6=document.getElementById('cs6-txt').value.trim();
+  const seg=CDT.seg;
+  function maskPhone(p){const d=p.replace(/\D/g,'');if(d.length>=10){const last=d.slice(-4);const masked='X'.repeat(d.length-4)+last;if(d.length===12)return'+'+masked.slice(0,2)+' '+masked.slice(2,7)+' '+masked.slice(7);if(d.length===11)return'+'+masked.slice(0,1)+' '+masked.slice(1,6)+' '+masked.slice(6);return masked.slice(0,5)+' '+masked.slice(5);}return p.slice(0,2)+'XXXXXXX'+p.slice(-2);}
+  document.getElementById('cr-profile-name').textContent=CDT.name;
+  document.getElementById('cr-profile-type').textContent=CDT_SEG_LABELS[seg];
+  document.getElementById('cr-profile-phone').textContent=' · '+maskPhone(CDT.phone);
+  document.getElementById('cr-clinic').textContent=CDT.clinic+' · '+CDT.city;
+  document.getElementById('cr-h').textContent=`Based on your answers, ${CDT.clinic} has at least 3 operational gaps that are costing you patients and revenue every week.`;
+  const techManual=(CDT.s3&&(CDT.s3.includes('Paper')||CDT.s3.includes('manual')||CDT.s3.includes('Excel')||CDT.s3.includes('WhatsApp')));
+  const highVol=(CDT.s2&&(CDT.s2.includes('60')||CDT.s2.includes('150')||CDT.s2.includes('50+')||CDT.s2.includes('25+')||CDT.s2.includes('35+')));
+  let sub='';if(CDT.s5&&!CDT.s5.includes('All of the above'))sub=`Your biggest identified gap — "${CDT.s5.toLowerCase()}" — is a solvable problem. `;sub+='Based on your current setup and patient volume, your team is likely spending 3–5 hours every day on tasks that can be systematically handled without manual effort.';
+  document.getElementById('cr-sub').textContent=sub;
+  const alertEl=document.getElementById('cr-alert'),alertTxt=document.getElementById('cr-alert-txt');
+  if(techManual&&highVol){alertEl.style.display='flex';alertTxt.textContent=CDT_ALERT.high_volume_manual;}
+  else if(techManual){alertEl.style.display='flex';alertTxt.textContent=CDT_ALERT.tech_gap;}
+  else{alertEl.style.display='none';}
+  const rd=document.getElementById('cr-recs');rd.innerHTML='';
+  CDT_RECS[seg].forEach((o,i)=>{rd.innerHTML+=`<div class="rec-card"><div class="rec-row"><div class="rec-num">${i+1}</div><div><div class="rec-t">${o.t}</div><div class="rec-b">${o.b}</div><span class="rec-imp">↑ ${o.imp}</span></div></div></div>`;});
+  document.getElementById('cr-next').textContent=CDT_NEXT[seg];
+  document.getElementById('cr-cta-clinic').textContent=CDT.clinic;
+  cdtShowStep('cdt-step-res');
+  document.getElementById('cdt-prog').style.width='100%';
+  cdtUpdateDots(7);
+}
+function cdtUpdateDots(n){
+  for(let i=0;i<=6;i++){const el=document.getElementById('csd'+i);if(!el)continue;el.classList.remove('active','done');if(i<n)el.classList.add('done');else if(i===n)el.classList.add('active');}
+  const pctEl=document.getElementById('cdt-prog-pct');if(pctEl)pctEl.textContent=CDT_PCT[n]||'';
+  const dotsEl=document.getElementById('cdt-step-dots');if(dotsEl)dotsEl.style.display=(n>6)?'none':'flex';
+}
+function cdtGoStep(n){
+  if(n===2)cdtBuildQ(2,'s2','cs2-opts','cdt-btn-2',false);
+  if(n===3)cdtBuildQ(3,'s3','cs3-opts','cdt-btn-3',false);
+  if(n===4)cdtBuildQ(4,'s4','cs4-opts','cdt-btn-4',true);
+  if(n===5)cdtBuildQ(5,'s5','cs5-opts','cdt-btn-5',false);
+  cdtShowStep('cdt-step-'+n);
+  document.getElementById('cdt-prog').style.width=(CDT_PROG_VALS[n]||90)+'%';
+  cdtUpdateDots(n);
+}
+function cdtShowStep(id){
+  document.querySelectorAll('#cdt-wrap .cdt-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('cdt-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+
+<!-- ─── FAQ ────────────────────────────────────────────────────── -->
+<section id="faq">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="badge">Need to Know</div>
+      <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-list fade-up" data-delay="1">
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What makes EMBEINGS AI different from other healthcare tech agencies?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Most agencies sell you software and leave. We start with a deep operational audit of your clinic before writing a single line of code. Every system we build is custom-engineered to how your specific practice works — and we stay on as operational partners after deployment, not just vendors.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Do we need technical staff to work with you?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Absolutely not. We handle all the technical implementation, integration, and maintenance. Your team only needs to understand how to use the outputs — cleaner workflows, automated reminders, better dashboards — without ever touching the underlying technology.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          How long does deployment take?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Our average deployment window is 30 days from signed agreement to live system. Complex hospital-wide implementations may run 45–60 days, while focused clinic automations (appointment reminders, intake flows) can go live in under 2 weeks.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is our patient data secure and HIPAA compliant?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Yes — HIPAA compliance is non-negotiable in everything we build. We use HIPAA-compliant LLM providers, enforce end-to-end encryption, sign BAAs with all vendors in your stack, and architect data flows so PHI is never stored outside compliant boundaries.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can you build something fully custom for our specialty?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Yes — we've built for general practice, orthopedics, mental health, dermatology, and multi-specialty hospital systems. Our discovery process is designed to deeply understand your specialty's unique patient journey, regulatory constraints, and clinical decision points before designing any solution.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What is a Free Workflow Diagnosis?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">It's a 60-minute strategy session where one of our clinical AI architects maps your current operational workflows, identifies your top 3 areas of inefficiency, and outlines what AI can realistically fix — with zero obligation to proceed. You walk away with a clear picture of your operational gaps regardless.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Do you work with hospitals or only small clinics?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Both. Our smallest clients are single-physician practices, and our largest are 400-bed regional hospitals. The approach scales — the audit scope, integration depth, and team size differ, but the methodology of custom-building AI around your actual workflow stays the same.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="https://embeings.io" target="_blank" rel="noopener noreferrer" class="footer-logo"><span>✦</span> EMBEINGS AI</a>
+        <p>AI-powered healthcare operations for clinics and hospitals that refuse to run on yesterday's tools.</p>
+        <a href="https://embeings.io" target="_blank" rel="noopener noreferrer" class="footer-visit-btn">
+          Visit Embeings AI
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="btn-tooltip">Embeings AI main website</span>
+        </a>
+      </div>
+
+      <!-- empty spacer pushes Services + Legal to the right -->
+      <div></div>
+
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Patient Flow Automation</a></li>
+          <li><a href="#">Clinical AI Agents</a></li>
+          <li><a href="#">Smart Automation</a></li>
+          <li><a href="#">AI Analytics</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">HIPAA Compliance</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">BAA Request</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 EMBEINGS AI. All rights reserved. Built for the future of healthcare.</p>
+      <a href="https://embeings.io/contact" target="_blank" rel="noopener noreferrer" class="footer-cta">Book a Strategy Call →</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── JS ─────────────────────────────────────────────────────── -->
+<script>
+
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  // Mobile nav toggle
+  const toggle = document.getElementById('mobileToggle');
+  const navLinks = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  // Scroll fade-up with IntersectionObserver
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  fadeEls.forEach(el => fadeObserver.observe(el));
+
+  // Stats counter animation
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1800;
+    const startTime = performance.now();
+    function update(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * target);
+      el.textContent = current + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+  const statEls = document.querySelectorAll('.stat-number[data-target]');
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  statEls.forEach(el => statObserver.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(other => other.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
